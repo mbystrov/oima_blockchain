@@ -6,8 +6,9 @@ import java.security.MessageDigest;
 public class StringUtil {
     /**
      * Applies sha256 to a string and returns a hash
+     *
      * @param input - input string
-     * @return  sha256 hash code
+     * @return sha256 hash code
      */
     public static String applySha256(String input) {
         try {

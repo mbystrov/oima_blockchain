@@ -8,6 +8,7 @@ public class Blockchain {
 
     /**
      * Constructor of the Blockchain class
+     *
      * @param zerosNumber - number of prefix zeros
      */
     public Blockchain(int zerosNumber) {
@@ -16,6 +17,7 @@ public class Blockchain {
 
     /**
      * Adds block to the blockchain collection. Checks block is valid.
+     *
      * @param block - a block to be added to the blockchain
      * @return boolean true if block has been added, otherwise false
      */
@@ -30,6 +32,7 @@ public class Blockchain {
 
     /**
      * Changes complexity for the blockchain
+     *
      * @param block - block based on which the decision of change complexity is made
      * @return string saying whether the complexity was changed or not
      */
@@ -37,7 +40,7 @@ public class Blockchain {
         String message;
         if (block.getCreationTime() > 60) {
             if (zerosNumber > 0) {
-            zerosNumber--;
+                zerosNumber--;
             }
             message = "N was decreased by 1";
         } else if (block.getCreationTime() < 10 && zerosNumber > 0) {
@@ -51,6 +54,7 @@ public class Blockchain {
 
     /**
      * Method to receive hashPrev of the last block in the blockchain
+     *
      * @return string hashPrev
      */
     public String getHashOneBeforeLast() {
@@ -59,6 +63,7 @@ public class Blockchain {
 
     /**
      * Method to check if a block is valid: its hashCurr starts with zerosPrefix, hashPrev equals to hashCurr of the previous block
+     *
      * @param block - block to be validated
      * @return boolean true if block passes validation, otherwise false
      */
@@ -70,6 +75,7 @@ public class Blockchain {
 
     /**
      * Method to generate new block id
+     *
      * @return int value of block id
      */
     public int generateNewId() {

@@ -16,12 +16,13 @@ public class Block {
 
     /**
      * Constructor of the Block class
-     * @param id - id of a block
-     * @param hashPrev - hash of the previous block
+     *
+     * @param id          - id of a block
+     * @param hashPrev    - hash of the previous block
      * @param zerosPrefix - prefix for the current hash
-     * @param minerId - id of a miner mined the block
+     * @param minerId     - id of a miner mined the block
      */
-    public Block (int id, String hashPrev, String zerosPrefix, int minerId) {
+    public Block(int id, String hashPrev, String zerosPrefix, int minerId) {
         this.id = id;
         this.hashPrev = hashPrev;
         this.zerosPrefix = zerosPrefix;
@@ -31,6 +32,7 @@ public class Block {
 
     /**
      * Method to generate hash of the block
+     *
      * @return current hash of the block
      */
     public String generateBlock() {
