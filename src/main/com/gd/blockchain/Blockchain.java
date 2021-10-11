@@ -38,12 +38,12 @@ public class Blockchain {
      */
     public String changeComplexity(Block block) {
         String message;
-        if (block.getCreationTime() > 60) {
+        if (block.getCreationTime() > 20) {
             if (zerosNumber > 0) {
                 zerosNumber--;
             }
             message = "N was decreased by 1";
-        } else if (block.getCreationTime() < 10 && zerosNumber > 0) {
+        } else if (block.getCreationTime() < 5) {
             zerosNumber++;
             message = String.format("N was increased to %s", block.getZerosPrefix().length() + 1);
         } else {
@@ -91,7 +91,7 @@ public class Blockchain {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         for (Block block : blockchain.values()) {
             sb.append(block);
         }

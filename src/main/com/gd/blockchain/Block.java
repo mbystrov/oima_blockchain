@@ -1,18 +1,20 @@
 package com.gd.blockchain;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class Block {
-    private int id;
-    private long timestamp = new Date().getTime();
-    private String hashPrev;
+    private final int id;
+    private final long timestamp = new Date().getTime();
+    private final String hashPrev;
     private String hashCurr;
     private long magicNumber;
     private long creationTime;
-    private String zerosPrefix;
-    private int minerId;
+    private final String zerosPrefix;
+    private final int minerId;
     private String complexityMsg;
+    private String messages;
 
     /**
      * Constructor of the Block class
@@ -79,7 +81,13 @@ public class Block {
                 "Magic number: " + magicNumber + "\n" +
                 "Hash of the previous block: " + "\n" + hashPrev + "\n" +
                 "Hash of the block: " + "\n" + hashCurr + "\n" +
+                "Block data:" + messages + "\n" +
                 "Block was generating for " + creationTime + " seconds" + "\n" +
                 complexityMsg + "\n\n";
+    }
+
+    public void setMessage(List<String> messages) {
+        this.messages = messages.stream()
+                .reduce("", (x, y) -> x + "\n" + y);
     }
 }

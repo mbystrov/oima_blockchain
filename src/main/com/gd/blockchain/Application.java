@@ -1,12 +1,19 @@
 package com.gd.blockchain;
 
+import com.gd.blockchain.multithreading.BlockManager;
+import com.gd.blockchain.multithreading.Miner;
+import com.gd.blockchain.multithreading.MinerManager;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Application {
-    private int numberOfBlocks;
-    private int numberOfMiners;
-    private int initialComplexity;
+    private final int numberOfBlocks;
+    private final int numberOfMiners;
+    private final int initialComplexity;
 
     /**
      * Constructor of the Application class
@@ -23,69 +30,26 @@ public class Application {
 
     /**
      * Method to start the application
-     * ToDo add multithreading
      */
     public void startApp() {
         Blockchain blockchain = new Blockchain(initialComplexity);
-        //----With threading v2
-        Thread miner1 = new Thread(new Miner(blockchain));
-        Thread miner2 = new Thread(new Miner(blockchain));
-        Thread miner3 = new Thread(new Miner(blockchain));
-        Thread miner4 = new Thread(new Miner(blockchain));
 
-        miner1.start();
-        miner2.start();
-        miner3.start();
-        miner4.start();
+        MinerManager minerManager = new MinerManager();
+        BlockManager blockManager = new BlockManager(minerManager, numberOfBlocks, blockchain);
 
-        //----With threading v1
-//        ExecutorService executor = Executors.newFixedThreadPool(numberOfMiners);
-//
-//        for (int i = 1; i <= numberOfMiners; i++) {
-//            executor.submit(() -> {
-//                String hashPrev = blockchain.getHashOneBeforeLast();
-//                String prefix =  new String(new char[blockchain.getZerosNumber()]).replace('\0', '0');
-//                blockchain.addBlock(new Block(blockchain.generateNewId(), hashPrev, prefix, 1));
-//                numberOfBlocks--;
-//            });
-//        }
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfMiners);
+        IntStream.rangeClosed(1, numberOfMiners)
+                .mapToObj(x -> new Miner(x, minerManager, blockManager, blockchain))
+                .forEach(executorService::submit);
 
-        //----Without threading
-//        do {
-//            String hashPrev = blockchain.getHashOneBeforeLast();
-//            String prefix =  new String(new char[blockchain.getZerosNumber()]).replace('\0', '0');
-//            blockchain.addBlock(new Block(blockchain.generateNewId(), hashPrev, prefix, 1));
-//            numberOfBlocks--;
-//        } while (numberOfBlocks > 0);
+        executorService.shutdown();
 
+        try {
+            if (!executorService.awaitTermination(10, TimeUnit.MINUTES))
+            System.err.println("Threads didn't finish in 10 minutes");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println(blockchain);
-    }
-}
-
-/**
- * The class is for the second attempt to implement multithreading to the application
- */
-class Miner implements Runnable {
-    Blockchain blockchain;
-    public static int minerId = 1;
-
-    /**
-     * Constructor of the Miner class
-     *
-     * @param blockchain - a blockchain miner tries to generate block for
-     */
-    public Miner(Blockchain blockchain) {
-        this.blockchain = blockchain;
-        minerId++;
-    }
-
-    @Override
-    public void run() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            String hashPrev = blockchain.getHashOneBeforeLast();
-            String prefix = new String(new char[blockchain.getZerosNumber()]).replace('\0', '0');
-            blockchain.addBlock(new Block(blockchain.generateNewId(), hashPrev, prefix, minerId));
-        });
     }
 }
