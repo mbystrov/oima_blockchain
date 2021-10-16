@@ -1,4 +1,4 @@
-package com.gd.blockchain;
+package com.gd.blockchain.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

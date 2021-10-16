@@ -1,5 +1,7 @@
 package com.gd.blockchain;
 
+import com.gd.blockchain.utils.StringUtil;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;

@@ -4,9 +4,11 @@ import com.gd.blockchain.multithreading.BlockManager;
 import com.gd.blockchain.multithreading.Miner;
 import com.gd.blockchain.multithreading.MinerManager;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -38,9 +40,11 @@ public class Application {
         BlockManager blockManager = new BlockManager(minerManager, numberOfBlocks, blockchain);
 
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfMiners);
-        IntStream.rangeClosed(1, numberOfMiners)
+        List<Miner> listMiners = IntStream.rangeClosed(1, numberOfMiners)
                 .mapToObj(x -> new Miner(x, minerManager, blockManager, blockchain))
-                .forEach(executorService::submit);
+                .collect(Collectors.toList());
+
+        listMiners.forEach(executorService::submit);
 
         executorService.shutdown();
 
