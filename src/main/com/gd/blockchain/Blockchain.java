@@ -97,4 +97,8 @@ public class Blockchain {
         }
         return sb.toString();
     }
+
+    public int getBlockchainSize() {
+        return blockchain.size();
+    }
 }

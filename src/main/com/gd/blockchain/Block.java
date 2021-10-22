@@ -4,6 +4,7 @@ import com.gd.blockchain.utils.StringUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Block {
@@ -17,6 +18,7 @@ public class Block {
     private final int minerId;
     private String complexityMsg;
     private String messages;
+    private Map<Integer, Long> wallet;
 
     /**
      * Constructor of the Block class
@@ -78,6 +80,7 @@ public class Block {
     public String toString() {
         return "Block:\n" +
                 "Created by miner # " + minerId + "\n" +
+                "Miner " + minerId + " gets 100 VC" + "\n" +
                 "Id: " + id + "\n" +
                 "Timestamp: " + timestamp + "\n" +
                 "Magic number: " + magicNumber + "\n" +

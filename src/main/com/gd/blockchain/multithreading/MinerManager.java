@@ -13,4 +13,8 @@ public class MinerManager {
     public void notifyAllMiners() {
         list.forEach(Miner::update);
     }
+
+    public List<Miner> getMiners() {
+        return list;
+    }
 }
