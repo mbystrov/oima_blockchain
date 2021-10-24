@@ -1,11 +1,11 @@
-package com.gd.blockchain.crypt;
+package com.griddynamics.blockchain.crypt;
 
 public class Message {
 
-    private int identifier;
-    private int minerId;
-    private String text;
-    private byte[] signedMsg;
+    private final int identifier;
+    private final int minerId;
+    private final String text;
+    private final byte[] signedMsg;
 
     public Message(int minerId, int identifier, String text, byte[] signedMsg) {
         this.minerId = minerId;

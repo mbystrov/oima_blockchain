@@ -1,6 +1,6 @@
-package com.gd.blockchain;
+package com.griddynamics.blockchain;
 
-import com.gd.blockchain.utils.StringUtil;
+import com.griddynamics.blockchain.utils.StringUtil;
 
 import java.util.Date;
 import java.util.List;

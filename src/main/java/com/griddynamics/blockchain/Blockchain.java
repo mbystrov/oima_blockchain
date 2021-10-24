@@ -1,9 +1,9 @@
-package com.gd.blockchain;
+package com.griddynamics.blockchain;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Blockchain {
-    private ConcurrentHashMap<Integer, Block> blockchain = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, Block> blockchain = new ConcurrentHashMap<>();
     private int zerosNumber;
 
     /**

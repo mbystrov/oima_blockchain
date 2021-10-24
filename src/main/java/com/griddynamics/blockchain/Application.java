@@ -1,8 +1,8 @@
-package com.gd.blockchain;
+package com.griddynamics.blockchain;
 
-import com.gd.blockchain.multithreading.BlockManager;
-import com.gd.blockchain.multithreading.Miner;
-import com.gd.blockchain.multithreading.MinerManager;
+import com.griddynamics.blockchain.multithreading.BlockManager;
+import com.griddynamics.blockchain.multithreading.Miner;
+import com.griddynamics.blockchain.multithreading.MinerManager;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Application {
     private final int numberOfBlocks;
@@ -50,7 +49,7 @@ public class Application {
 
         try {
             if (!executorService.awaitTermination(10, TimeUnit.MINUTES))
-            System.err.println("Threads didn't finish in 10 minutes");
+                System.err.println("Threads didn't finish in 10 minutes");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package com.gd.blockchain;
+package com.griddynamics.blockchain;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package com.gd.blockchain.multithreading;
+package com.griddynamics.blockchain.multithreading;
 
-import com.gd.blockchain.Block;
-import com.gd.blockchain.Blockchain;
-import com.gd.blockchain.Messages;
-import com.gd.blockchain.crypt.KeyPairCreator;
-import com.gd.blockchain.crypt.Message;
-import com.gd.blockchain.crypt.Transaction;
+import com.griddynamics.blockchain.Block;
+import com.griddynamics.blockchain.Blockchain;
+import com.griddynamics.blockchain.Messages;
+import com.griddynamics.blockchain.crypt.KeyPairCreator;
+import com.griddynamics.blockchain.crypt.Message;
+import com.griddynamics.blockchain.crypt.Transaction;
 
 import java.security.*;
 import java.util.Random;

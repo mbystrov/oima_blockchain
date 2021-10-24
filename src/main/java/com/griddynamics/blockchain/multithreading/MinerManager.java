@@ -1,4 +1,4 @@
-package com.gd.blockchain.multithreading;
+package com.griddynamics.blockchain.multithreading;
 
 import java.util.ArrayList;
 import java.util.List;

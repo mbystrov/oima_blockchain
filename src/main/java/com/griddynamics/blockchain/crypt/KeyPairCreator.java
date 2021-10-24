@@ -1,4 +1,4 @@
-package com.gd.blockchain.crypt;
+package com.griddynamics.blockchain.crypt;
 
 import java.security.*;
 
@@ -12,7 +12,7 @@ public class KeyPairCreator {
         return keyGen.generateKeyPair();
     }
 
-    public static byte[] sign(String msg, PrivateKey privateKey)  throws Exception{
+    public static byte[] sign(String msg, PrivateKey privateKey) throws Exception {
         Signature rsa = Signature.getInstance("SHA1withRSA");
         rsa.initSign(privateKey);
         rsa.update(msg.getBytes());

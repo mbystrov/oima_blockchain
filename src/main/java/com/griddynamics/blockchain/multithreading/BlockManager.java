@@ -1,11 +1,11 @@
-package com.gd.blockchain.multithreading;
+package com.griddynamics.blockchain.multithreading;
 
-import com.gd.blockchain.Block;
-import com.gd.blockchain.Blockchain;
-import com.gd.blockchain.crypt.KeyPairCreator;
-import com.gd.blockchain.crypt.Message;
-import com.gd.blockchain.crypt.Transaction;
-import com.gd.blockchain.utils.Tuple;
+import com.griddynamics.blockchain.Block;
+import com.griddynamics.blockchain.Blockchain;
+import com.griddynamics.blockchain.crypt.KeyPairCreator;
+import com.griddynamics.blockchain.crypt.Message;
+import com.griddynamics.blockchain.crypt.Transaction;
+import com.griddynamics.blockchain.utils.Tuple;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ public class BlockManager {
     private final MinerManager minerManager;
     private final Blockchain blockchain;
     private final List<String> messages = new ArrayList<>();
-    private ConcurrentHashMap<Integer, Tuple<PublicKey, Integer>> publicKeys = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Integer, Integer> wallet = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, Tuple<PublicKey, Integer>> publicKeys = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, Integer> wallet = new ConcurrentHashMap<>();
 
     public BlockManager(MinerManager minerManager, int maxSize, Blockchain blockchain) {
         this.maxBlockchainSize = maxSize;

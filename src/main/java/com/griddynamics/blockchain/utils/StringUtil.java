@@ -1,4 +1,4 @@
-package com.gd.blockchain.utils;
+package com.griddynamics.blockchain.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

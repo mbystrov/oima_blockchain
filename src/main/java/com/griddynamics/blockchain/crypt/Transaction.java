@@ -1,11 +1,11 @@
-package com.gd.blockchain.crypt;
+package com.griddynamics.blockchain.crypt;
 
 public class Transaction {
 
-    private int identifier;
-    private int senderMinerId;
-    private int receiverMinerId;
-    private int amount;
+    private final int identifier;
+    private final int senderMinerId;
+    private final int receiverMinerId;
+    private final int amount;
     private byte[] signedTransaction;
 
     public Transaction(int identifier, int senderMinerId, int receiverMinerId, int amount) {
