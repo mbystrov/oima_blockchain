@@ -37,9 +37,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "miner" + senderMinerId
+        return "miner #" + senderMinerId
                 + " send " + amount
-                + "VC to miner " + receiverMinerId;
+                + "VC to miner #" + receiverMinerId;
     }
 
     public void setSignedTransaction(byte[] signedTransaction) {

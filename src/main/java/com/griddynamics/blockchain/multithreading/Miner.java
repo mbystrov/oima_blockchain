@@ -1,30 +1,28 @@
 package com.griddynamics.blockchain.multithreading;
 
 import com.griddynamics.blockchain.Block;
-import com.griddynamics.blockchain.Blockchain;
-import com.griddynamics.blockchain.Messages;
 import com.griddynamics.blockchain.crypt.KeyPairCreator;
-import com.griddynamics.blockchain.crypt.Message;
 import com.griddynamics.blockchain.crypt.Transaction;
+import com.griddynamics.blockchain.crypt.TransactionBuilder;
 
+import java.net.Inet4Address;
 import java.security.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Miner implements Runnable {
     private boolean newBlockGenerated = false;
     private final int minerId;
-    private final BlockManager blockManager;
-    private final Blockchain blockchain;
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private int messageId = 0;
     private int transactionId = 0;
+    private final MinerManager minerManager;
 
-    public Miner(int minerId, MinerManager minerManager, BlockManager blockManager, Blockchain blockchain) {
+    public Miner(int minerId, MinerManager minerManager) {
         this.minerId = minerId;
-        minerManager.addMiner(this);
-        this.blockManager = blockManager;
-        this.blockchain = blockchain;
+        this.minerManager = minerManager;
         try {
             KeyPair keyPair = KeyPairCreator.createKeyPair();
             privateKey = keyPair.getPrivate();
@@ -32,52 +30,41 @@ public class Miner implements Runnable {
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             e.printStackTrace();
         }
-        blockManager.initializeMiner(minerId, publicKey);
+        minerManager.addMiner(this);
     }
 
-    public void mineBlocks() {
-        while (blockManager.areAllBlocksLeft()) {
-            Block block = createBlock(); // The call of a blocking thread which creates a new block
-            synchronized (blockManager) { // The first miner who created a new block locks this code part
-                if (newBlockGenerated) { // If a miner is late they send a transaction, otherwise add the new block
-                    blockManager.sendTransaction(createTransaction());
-                } else {
-                    blockManager.addBlock(block, minerId);
-                }
+    public void mineBlock() {
+        Block block = createBlock(); // The call of a blocking thread which creates a new block
+        synchronized (minerManager) { // The first miner who created a new block locks this code part
+            if (newBlockGenerated) { // If a miner is late they send a transaction, otherwise add the new block
+                Optional<Transaction> transaction = createTransaction();
+                transaction.ifPresent(minerManager::performTransaction);
+            } else {
+                minerManager.addBlock(block, minerId);
             }
-            newBlockGenerated = false;
         }
+        newBlockGenerated = false;
     }
 
-    public Message createMessage() {
-        String msgText = Messages.getRandomMessage();
-        byte[] signedMsd = new byte[0];
-        try {
-            signedMsd = KeyPairCreator.sign(msgText, privateKey);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Message(minerId, messageId++, msgText, signedMsd);
-    }
-
-    public Transaction createTransaction() {
+    public Optional<Transaction> createTransaction() {
         int amount = new Random().nextInt(100);
-        int receiverMinerId = new Random().nextInt(blockManager.getMinersCount());
-        Transaction transaction = new Transaction(transactionId++, minerId, receiverMinerId, amount);
-        String transactionString = transaction.toString();
-        try {
-            byte[] signedTransaction = KeyPairCreator.sign(transactionString, privateKey);
-            transaction.setSignedTransaction(signedTransaction);
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<Integer> minerIdList = minerManager.getMinersList()
+                .stream()
+                .map(Miner::getMinerId)
+                .filter(x -> x != minerId)
+                .collect(Collectors.toList());
+        if (!minerIdList.isEmpty()) {
+            int receiverMinerId = minerIdList.get(new Random().nextInt(minerIdList.size()));
+            Transaction transaction = TransactionBuilder.build(transactionId++, minerId, receiverMinerId, amount, privateKey);
+            return Optional.of(transaction);
+        } else {
+            return Optional.empty();
         }
-        return transaction;
     }
 
     public Block createBlock() {
-        String hashPrev = blockchain.getHashOneBeforeLast();
-        String prefix = new String(new char[blockchain.getZerosNumber()]).replace('\0', '0');
-        return new Block(blockchain.generateNewId(), hashPrev, prefix, minerId);
+        NewBlockInfo newBlockInfo = minerManager.getNewBlockInfo();
+        return new Block(newBlockInfo.getBlockId(), newBlockInfo.getHashPrev(), newBlockInfo.getPrefix(), minerId);
     }
 
     public void update() {
@@ -86,6 +73,16 @@ public class Miner implements Runnable {
 
     @Override
     public void run() {
-        mineBlocks();
+        while (minerManager.isNewBlockAllowed()) {
+            mineBlock();
+        }
+    }
+
+    public int getMinerId() {
+        return minerId;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
     }
 }

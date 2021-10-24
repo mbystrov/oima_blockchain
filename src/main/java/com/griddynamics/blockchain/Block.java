@@ -19,7 +19,6 @@ public class Block {
     private String complexityMsg;
     private String messages;
     private Map<Integer, Long> wallet;
-
     /**
      * Constructor of the Block class
      *
@@ -71,6 +70,10 @@ public class Block {
 
     public long getCreationTime() {
         return creationTime;
+    }
+
+    public int getMinerId() {
+        return minerId;
     }
 
     public void setComplexityMsg(String complexityMsg) {

@@ -1,8 +1,9 @@
 package com.griddynamics.blockchain;
 
-import com.griddynamics.blockchain.multithreading.BlockManager;
+import com.griddynamics.blockchain.multithreading.BlockchainManager;
 import com.griddynamics.blockchain.multithreading.Miner;
 import com.griddynamics.blockchain.multithreading.MinerManager;
+import com.griddynamics.blockchain.multithreading.TransactionManager;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -35,12 +36,13 @@ public class Application {
     public void startApp() {
         Blockchain blockchain = new Blockchain(initialComplexity);
 
-        MinerManager minerManager = new MinerManager();
-        BlockManager blockManager = new BlockManager(minerManager, numberOfBlocks, blockchain);
+        TransactionManager transactionManager = new TransactionManager();
+        BlockchainManager blockchainManager = new BlockchainManager(numberOfBlocks, blockchain);
+        MinerManager minerManager = new MinerManager(transactionManager, blockchainManager);
 
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfMiners);
         List<Miner> listMiners = IntStream.rangeClosed(1, numberOfMiners)
-                .mapToObj(x -> new Miner(x, minerManager, blockManager, blockchain))
+                .mapToObj(minerId -> new Miner(minerId, minerManager))
                 .collect(Collectors.toList());
 
         listMiners.forEach(executorService::submit);
