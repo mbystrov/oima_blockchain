@@ -8,8 +8,9 @@ import java.security.PublicKey;
 public class BlockManagerUtils {
     /**
      * Verifying transaction
-     * @param transaction transaction received from Miner
-     * @param publicKey Miner's RSA public key
+     *
+     * @param transaction       transaction received from Miner
+     * @param publicKey         Miner's RSA public key
      * @param transactionNumber number of the transaction
      * @return boolean status
      */

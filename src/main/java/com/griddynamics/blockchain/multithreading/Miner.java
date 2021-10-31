@@ -33,10 +33,15 @@ public class Miner implements Runnable {
         minerManager.addMiner(this);
     }
 
+    /**
+     * Creates a block. Adds the block to a blockchain.
+     * When a thread adds block, @{newBlockGenerated} is set to true.
+     * If the block has already been created by another thread, performs transaction.
+     */
     public void mineBlock() {
-        Block block = createBlock(); // The call of a blocking thread which creates a new block
-        synchronized (minerManager) { // The first miner who created a new block locks this code part
-            if (newBlockGenerated) { // If a miner is late they send a transaction, otherwise add the new block
+        Block block = createBlock();
+        synchronized (minerManager) {
+            if (newBlockGenerated) {
                 Optional<Transaction> transaction = createTransaction();
                 transaction.ifPresent(minerManager::performTransaction);
             } else {
@@ -46,6 +51,9 @@ public class Miner implements Runnable {
         newBlockGenerated = false;
     }
 
+    /**
+     * @return an Optional<Transaction> for a random miner with random amount of VC.
+     */
     public Optional<Transaction> createTransaction() {
         int amount = new Random().nextInt(100);
         List<Integer> minerIdList = minerManager.getMinersList()
@@ -62,15 +70,26 @@ public class Miner implements Runnable {
         }
     }
 
+    /**
+     * Passes information about the last block to arguments of Block's creation
+     *
+     * @return a new Block object
+     */
     public Block createBlock() {
         NewBlockInfo newBlockInfo = minerManager.getNewBlockInfo();
         return new Block(newBlockInfo.getBlockId(), newBlockInfo.getHashPrev(), newBlockInfo.getPrefix(), minerId);
     }
 
+    /**
+     * A variable informing a user that block was created by another thread is set to true
+     */
     public void update() {
         newBlockGenerated = true;
     }
 
+    /**
+     * Sends command to mine a new block if a minerManager allows a client to do that
+     */
     @Override
     public void run() {
         while (minerManager.isNewBlockAllowed()) {

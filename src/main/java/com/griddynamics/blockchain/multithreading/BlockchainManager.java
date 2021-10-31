@@ -14,7 +14,7 @@ public class BlockchainManager {
     private final Blockchain blockchain;
 
     /**
-     * @param maxSize maximum size of a blockchain. Should be greater then 0
+     * @param maxSize    maximum size of a blockchain. Should be greater then 0
      * @param blockchain blockchain
      */
     public BlockchainManager(int maxSize, Blockchain blockchain) {
@@ -28,6 +28,7 @@ public class BlockchainManager {
     /**
      * Adds a block to a blockchain, increases number of blocks in a blockchainManager.
      * If the number of blocks is greater or equal to maximum blockchain size, sets boolean emptySpace to false.
+     *
      * @param block block to be added to a blockchain
      */
     public void addBlock(Block block) {
@@ -38,7 +39,8 @@ public class BlockchainManager {
     }
 
     /**
-     * Returns boolean status saying whether a new block allowed
+     * Returns boolean status saying if a blockchain reached max size
+     *
      * @return boolean emptySpace
      */
     public boolean isNewBlockAllowed() {
@@ -47,6 +49,7 @@ public class BlockchainManager {
 
     /**
      * Gets info of a next block
+     *
      * @return new block info
      */
     public NewBlockInfo getNewBlockInfo() {
@@ -56,7 +59,6 @@ public class BlockchainManager {
     }
 
     /**
-     *
      * @return number of created blocks
      */
     public int getCreatedBlocksNumber() {
