@@ -30,28 +30,28 @@ Insecure hash functions allow hackers to change the information of the block so 
 same, so the hash function must be secure. A good example of a secure hash function is SHA-256. You can use this
 implementation of the SHA-256 hashing:
 
-`import java.security.MessageDigest;`
+    import java.security.MessageDigest;
 
-`class StringUtil {`  
-`/* Applies Sha256 to a string and returns a hash. */`  
-`public static String applySha256(String input){`  
-`try {`  
-`MessageDigest digest = MessageDigest.getInstance("SHA-256");`  
-`/* Applies sha256 to our input */`  
-`byte[] hash = digest.digest(input.getBytes("UTF-8"));`  
-`StringBuilder hexString = new StringBuilder();`  
-`for (byte elem: hash) {`  
-`String hex = Integer.toHexString(0xff & elem);`  
-`if(hex.length() == 1) hexString.append('0');`  
-`hexString.append(hex);`  
-`}`  
-`return hexString.toString();`  
-`}`  
-`catch(Exception e) {`  
-`throw new RuntimeException(e);`  
-`}`  
-`}`  
-`}`
+    class StringUtil {
+        /* Applies Sha256 to a string and returns a hash. */
+        public static String applySha256(String input) {
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                /* Applies sha256 to our input */
+                byte[] hash = digest.digest(input.getBytes("UTF-8"));
+                StringBuilder hexString = new StringBuilder();
+                for (byte elem: hash) {
+                    String hex = Integer.toHexString(0xff & elem);
+                    if(hex.length() == 1) hexString.append('0');
+                    hexString.append(hex);
+                }
+                return hexString.toString();
+            }
+            catch(Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
 You should create 5 blocks in this stage. After the creation, validate the created blockchain using your validation
 method.
